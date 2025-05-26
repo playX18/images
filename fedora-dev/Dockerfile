@@ -1,9 +1,8 @@
 FROM fedora:latest
 
 # Install development tools, zsh, and sudo (no groupinstall for dnf5)
-RUN dnf install -y @development-tools zsh sudo cmake perl openssl-devel helix nano net-tools awk \
-    && dnf clean all
-
+RUN dnf -y update && dnf -y upgrade
+RUN dnf install -y @development-tools zsh sudo cmake perl openssl-devel helix nano net-tools awk
 RUN dnf -y install dnf-plugins-core \
     && dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo \
     && dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 
