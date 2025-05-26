@@ -37,3 +37,4 @@ RUN mkdir -p ~/.local/bin \
     && echo "export PATH=\$HOME/.local/bin:\$PATH" >> ~/.zshrc
 
 RUN curl -sS https://starship.rs/install.sh | sh -s -- -y --bin-dir ~/.local/bin
+RUN echo 'eval "$(starship init zsh)"' >> ~/.zshrc
