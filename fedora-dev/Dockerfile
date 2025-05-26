@@ -18,6 +18,16 @@ RUN useradd -m -s /usr/bin/zsh --uid=1000 --groups=docker -G wheel coder \
 USER coder
 WORKDIR /home/coder
 SHELL ["/usr/bin/zsh", "-c"]
+# Install Oh My Zsh non-interactively
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# Install zsh-autosuggestions and zsh-autocomplete plugins
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-/home/coder/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
+    && git clone https://github.com/marlonrichert/zsh-autocomplete ${ZSH_CUSTOM:-/home/coder/.oh-my-zsh/custom}/plugins/zsh-autocomplete
+
+# Enable ssh-agent, zsh-autosuggestions, and zsh-autocomplete plugins in .zshrc
+RUN sed -i 's/plugins=(git)/plugins=(git ssh-agent zsh-autosuggestions zsh-autocomplete)/' ~/.zshrc
+
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN curl -L https://foundry.paradigm.xyz | sh -s -- -y
 RUN foundryup
