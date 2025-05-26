@@ -30,10 +30,3 @@ jobs:
           file: ./fedora-dev/Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/fedora-dev:latest
-          # You can add more tags here, for example, based on the commit SHA or version
-          # tags: |
-          #   ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/fedora-dev:latest
-          #   ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/fedora-dev:${{ github.sha }}
-
-      - name: Image digest
-        run: echo "Pushed image digest: ${{ steps.docker_build.outputs.digest }}"
