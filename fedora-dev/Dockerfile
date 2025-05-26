@@ -27,6 +27,7 @@ RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-/ho
 # Enable ssh-agent, zsh-autosuggestions, and zsh-autocomplete plugins in .zshrc
 RUN sed -i 's/plugins=(git)/plugins=(git ssh-agent zsh-autosuggestions zsh-autocomplete)/' ~/.zshrc
 
+
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN curl -L https://foundry.paradigm.xyz | sh -s -- -y
 RUN foundryup
