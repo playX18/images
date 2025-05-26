@@ -1,0 +1,39 @@
+name: Build and Publish Fedora Dev Image
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write # Required to publish to GHCR
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./fedora-dev
+          file: ./fedora-dev/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/fedora-dev:latest
+          # You can add more tags here, for example, based on the commit SHA or version
+          # tags: |
+          #   ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/fedora-dev:latest
+          #   ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/fedora-dev:${{ github.sha }}
+
+      - name: Image digest
+        run: echo "Pushed image digest: ${{ steps.docker_build.outputs.digest }}"
