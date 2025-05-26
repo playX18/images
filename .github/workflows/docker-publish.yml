@@ -29,6 +29,6 @@ jobs:
         with:
           context: ./fedora-dev
           file: ./fedora-dev/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           tags: ghcr.io/playx18/fedora-dev:latest
