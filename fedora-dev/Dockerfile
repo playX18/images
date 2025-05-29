@@ -23,7 +23,7 @@ RUN chmod 0440 /etc/sudoers.d/wheel
 USER coder
 WORKDIR /home/coder
 
-RUN /bin/bash -c "NONINTERACTIVE=1 $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+#RUN /bin/bash -c "NONINTERACTIVE=1 $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 #
 # Uses "git", "ssh-agent" and "history-substring-search" bundled plugins
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.1/zsh-in-docker.sh)" -- \
