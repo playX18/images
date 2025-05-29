@@ -2,7 +2,8 @@ FROM fedora:latest
 
 # Install development tools and necessary packages
 RUN sudo dnf install -y @development-tools && \
-    sudo dnf install -y zsh git curl wget tar unzip gcc-c++ cmake openssl-devel protobuf-devel shadow-utils sudo binaryen
+    sudo dnf install -y zsh git curl wget tar unzip gcc-c++ cmake openssl-devel protobuf-devel shadow-utils sudo binaryen awk net-tools \
+        llvm-devel clang-devel gdb lldb
 
 # Create user coder and add to wheel group
 RUN useradd -m -s /bin/zsh coder && \
