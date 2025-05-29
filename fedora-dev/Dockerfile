@@ -18,7 +18,7 @@ RUN useradd -m -s /usr/bin/zsh --uid=1000 --groups=docker -G wheel coder \
 USER coder
 WORKDIR /home/coder
 SHELL ["/usr/bin/zsh", "-c"]
-RUN sudo chsh coder --shell /usr/bin/zsh
+#RUN sudo chsh coder --shell /usr/bin/zsh
 RUN /bin/bash -c "NONINTERACTIVE=1 $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 RUN "zsh"
 #
