@@ -11,17 +11,19 @@ RUN systemctl enable docker
 RUN ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/docker-compose
 RUN dnf install -y clang-devel llvm-devel libgit2-devel gdb lldb
 # Create user 'coder' with zsh as default shell, add to wheel group for sudo
-RUN useradd -m -s /usr/bin/zsh --uid=1000 --groups=docker -G wheel coder
+RUN useradd -m -s /usr/bin/zsh --uid=1000 -G wheel coder
+RUN usermod -aG wheel coder 
+RUN usermod -aG docker coder
 RUN mkdir -p /etc/sudoers.d
 RUN echo 'coder ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/coder
+RUN echo '%wheel ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/wheel 
 RUN chmod 0440 /etc/sudoers.d/coder
+RUN chmod 0440 /etc/sudoers.d/wheel
 
 USER coder
 WORKDIR /home/coder
-SHELL ["/usr/bin/zsh", "-c"]
-#RUN sudo chsh coder --shell /usr/bin/zsh
+
 RUN /bin/bash -c "NONINTERACTIVE=1 $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-RUN "zsh"
 #
 # Uses "git", "ssh-agent" and "history-substring-search" bundled plugins
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.1/zsh-in-docker.sh)" -- \
