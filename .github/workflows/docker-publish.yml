@@ -1,4 +1,4 @@
-name: Build and Publish Fedora Dev Image
+name: Build and Publish Dev Image
 
 on:
   push:
@@ -27,8 +27,8 @@ jobs:
       - name: Build and publish to GHCR
         uses: docker/build-push-action@v6
         with:
-          context: ./fedora-dev
-          file: ./fedora-dev/Dockerfile
+          context: ./ubuntu-dev
+          file: ./ubuntu-dev/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/playx18/fedora-dev:latest
+          tags: ghcr.io/playx18/ubuntu-dev:latest

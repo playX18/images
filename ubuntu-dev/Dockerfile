@@ -1,22 +1,33 @@
-FROM fedora:latest
+FROM ubuntu:noble
 
 # Install development tools, zsh, and sudo (no groupinstall for dnf5)
 #RUN dnf -y update && dnf -y upgrade
-RUN dnf install -y @development-tools zsh sudo cmake perl openssl-devel helix nano net-tools awk
-RUN dnf -y install dnf-plugins-core \
-    && dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo \
-    && dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 
-RUN dnf -y install binaryen golang protobuf-compiler wget sudo which htop free ruby
-RUN systemctl enable docker
-RUN ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/docker-compose
-RUN dnf install -y clang-devel llvm-devel libgit2-devel gdb lldb
+SHELL ["/bin/bash", "-c"]
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y build-essential zsh sudo cmake perl libssl-dev nano net-tools gawk
+RUN apt-get update && apt-get install -y \
+    podman \
+    golang \
+    protobuf-compiler \
+    wget \
+    sudo \
+    htop \
+    ruby \
+    clang \
+    llvm \
+    libgit2-dev \
+    gdb \
+    lldb \
+    which \
+    binaryen \
+    freeglut3-dev
 # Create user 'coder' with zsh as default shell, add to wheel group for sudo
-RUN useradd -m -s /usr/bin/zsh --uid=1000 -G wheel coder
-RUN usermod -aG wheel coder 
+RUN useradd -m -s /usr/bin/zsh --uid=1000 -G sudo coder
+RUN usermod -aG sudo coder 
 RUN usermod -aG docker coder
 RUN mkdir -p /etc/sudoers.d
 RUN echo 'coder ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/coder
-RUN echo '%wheel ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/wheel 
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/wheel 
 RUN chmod 0440 /etc/sudoers.d/coder
 RUN chmod 0440 /etc/sudoers.d/wheel
 
