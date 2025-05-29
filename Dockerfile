@@ -3,7 +3,7 @@ FROM fedora:latest
 # Install development tools and necessary packages
 RUN sudo dnf install -y @development-tools && \
     sudo dnf install -y zsh git curl wget tar unzip gcc-c++ cmake openssl-devel protobuf-devel shadow-utils sudo binaryen awk net-tools \
-        llvm-devel clang-devel gdb lldb
+        llvm-devel clang-devel gdb lldb openssl-devel perl
 
 # Create user coder and add to wheel group
 RUN useradd -m -s /bin/zsh coder && \
@@ -19,7 +19,8 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -t gentoo -p git -p ssh-agent -p 'history-substring-search' -p zsh-autosuggestions  -p zsh-autocomplete \
     -a 'bindkey "\$terminfo[kcuu1]" history-substring-search-up' \
     -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down'
-
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-/home/coder/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
+    && git clone https://github.com/marlonrichert/zsh-autocomplete ${ZSH_CUSTOM:-/home/coder/.oh-my-zsh/custom}/plugins/zsh-autocomplete
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN curl -L https://foundry.paradigm.xyz | sh -s -- -y
 
