@@ -9,8 +9,6 @@ RUN apt-get update && \
     apt-get install --yes --no-install-recommends --no-install-suggests \
     ca-certificates && \
     rm -rf /var/lib/apt/lists/*
-COPY docker-archive-keyring.gpg /usr/share/keyrings/docker-archive-keyring.gpg
-COPY docker.list /etc/apt/sources.list.d/docker.list
 
 # Install baseline packages
 RUN apt-get update && \
@@ -18,12 +16,8 @@ RUN apt-get update && \
     bash \
     zsh \
     build-essential \
-    containerd.io \
+    podman \
     curl \
-    docker-ce \
-    docker-ce-cli \
-    docker-buildx-plugin \
-    docker-compose-plugin \
     htop \
     jq \
     locales \
@@ -47,11 +41,7 @@ RUN apt-get update && \
     apt-get install --yes git \
     && rm -rf /var/lib/apt/lists/*
 
-# Enables Docker starting with systemd
-RUN systemctl enable docker
 
-# Create a symlink for standalone docker-compose usage
-RUN ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/docker-compose
 
 # Generate the desired locale (en_US.UTF-8)
 RUN locale-gen en_US.UTF-8
@@ -66,7 +56,7 @@ RUN userdel -r ubuntu && \
     useradd coder \
     --create-home \
     --shell=/bin/bash \
-    --groups=docker \
+    --groups=sudo \
     --uid=1000 \
     --user-group && \
     echo "coder ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
