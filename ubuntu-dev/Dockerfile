@@ -1,68 +1,37 @@
 FROM ubuntu:noble
 
+# Install development tools, zsh, and sudo (no groupinstall for dnf5)
+#RUN dnf -y update && dnf -y upgrade
 SHELL ["/bin/bash", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
-
-# Install the Docker apt repository
-RUN apt-get update && \
-    apt-get upgrade --yes --no-install-recommends --no-install-suggests && \
-    apt-get install --yes --no-install-recommends --no-install-suggests \
-    ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install baseline packages
-RUN apt-get update && \
-    apt-get install --yes --no-install-recommends --no-install-suggests \
-    bash \
-    zsh \
-    build-essential \
+RUN apt-get update && apt-get install -y build-essential zsh sudo cmake perl libssl-dev nano net-tools gawk
+RUN apt-get update && apt-get install -y \
     podman \
-    curl \
-    htop \
-    jq \
-    locales \
-    man \
-    pipx \
-    python3 \
-    python3-pip \
-    software-properties-common \
-    sudo \
-    systemd \
-    systemd-sysv \
-    unzip \
-    vim \
-    wget \
-    binaryen \
+    golang \
     protobuf-compiler \
-    openssl-dev \
-    rsync && \
-# Install latest Git using their official PPA
-    add-apt-repository ppa:git-core/ppa && \
-    apt-get install --yes git \
-    && rm -rf /var/lib/apt/lists/*
-
-
-
-# Generate the desired locale (en_US.UTF-8)
-RUN locale-gen en_US.UTF-8
-
-# Make typing unicode characters in the terminal work.
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US.UTF-8
-ENV LC_ALL=en_US.UTF-8
-
-# Remove the `ubuntu` user and add a user `coder` so that you're not developing as the `root` user
-RUN userdel -r ubuntu && \
-    useradd coder \
-    --create-home \
-    --shell=/bin/bash \
-    --groups=sudo \
-    --uid=1000 \
-    --user-group && \
-    echo "coder ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
+    wget \
+    sudo \
+    htop \
+    ruby \
+    clang \
+    llvm \
+    libgit2-dev \
+    gdb \
+    lldb \
+    which \
+    binaryen \
+    freeglut3-dev
+# Create user 'coder' with zsh as default shell, add to wheel group for sudo
+RUN useradd -m -s /usr/bin/zsh --uid=1000 -G sudo coder
+RUN usermod -aG sudo coder 
+RUN usermod -aG docker coder
+RUN mkdir -p /etc/sudoers.d
+RUN echo 'coder ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/coder
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/wheel 
+RUN chmod 0440 /etc/sudoers.d/coder
+RUN chmod 0440 /etc/sudoers.d/wheel
 
 USER coder
-RUN pipx ensurepath 
 WORKDIR /home/coder
 
 #RUN /bin/bash -c "NONINTERACTIVE=1 $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

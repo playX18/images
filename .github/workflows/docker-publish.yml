@@ -27,8 +27,8 @@ jobs:
       - name: Build and publish to GHCR
         uses: docker/build-push-action@v6
         with:
-          context: ./ubuntu-dev
-          file: ./ubuntu-dev/Dockerfile
+          context: ./
+          file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/playx18/ubuntu-dev:latest
+          tags: ghcr.io/playx18/fedora-dev:latest
