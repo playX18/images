@@ -13,7 +13,7 @@ RUN dnf install -y clang-devel llvm-devel libgit2-devel gdb lldb
 # Create user 'coder' with zsh as default shell, add to wheel group for sudo
 RUN useradd -m -s /usr/bin/zsh --uid=1000 --groups=docker -G wheel coder
 RUN mkdir -p /etc/sudoers.d/coder
-RUN echo 'coder ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/coder
+RUN echo 'coder ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d
 RUN chmod 0440 /etc/sudoers.d/coder
 
 USER coder
