@@ -11,9 +11,9 @@ RUN systemctl enable docker
 RUN ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/docker-compose
 RUN dnf install -y clang-devel llvm-devel libgit2-devel gdb lldb
 # Create user 'coder' with zsh as default shell, add to wheel group for sudo
-RUN useradd -m -s /usr/bin/zsh --uid=1000 --groups=docker -G wheel coder \
-    && echo 'coder ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/coder \
-    && chmod 0440 /etc/sudoers.d/coder
+RUN useradd -m -s /usr/bin/zsh --uid=1000 --groups=docker -G wheel coder
+RUN echo 'coder ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/coder
+RUN chmod 0440 /etc/sudoers.d/coder
 
 USER coder
 WORKDIR /home/coder
