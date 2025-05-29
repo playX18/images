@@ -6,7 +6,7 @@ RUN dnf install -y @development-tools zsh sudo cmake perl openssl-devel helix na
 RUN dnf -y install dnf-plugins-core \
     && dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo \
     && dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 
-RUN dnf -y install binaryen golang protobuf-compiler wget sudo which htop free
+RUN dnf -y install binaryen golang protobuf-compiler wget sudo which htop free ruby
 RUN systemctl enable docker
 RUN ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/docker-compose
 RUN dnf install -y clang-devel llvm-devel libgit2-devel gdb lldb
